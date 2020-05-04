@@ -20,7 +20,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import student.StudentInterface;
+import instructorUI.InstructorInterface;
+import studentUI.StudentInterface;
 
 @SuppressWarnings("serial")
 public class LoginInterface extends JFrame {
@@ -142,7 +143,7 @@ public class LoginInterface extends JFrame {
 		ResultSet result = st.executeQuery(sql);
 		while(result.next()) {
 			if(pass.equals(result.getString("login_pass"))) {
-				new StudentInterface(connection, id);
+				new InstructorInterface(connection, id);
 				st.close();
 				dispose();
 				return;
