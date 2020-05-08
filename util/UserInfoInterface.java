@@ -1,4 +1,4 @@
-package general;
+package util;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,11 +20,11 @@ public class UserInfoInterface extends JFrame {
 
 	private Connection connection;
 	private String infoID;
-	private UserInfoListener listener;
+	private InfoListener listener;
 	
 	private JTextField nameField, phoneField, emailField;
 	
-	public UserInfoInterface(Connection connection, String info_id, UserInfoListener listener) {
+	public UserInfoInterface(Connection connection, String info_id, InfoListener listener) {
 		super("Edit Information");
 		this.connection = connection;
 		this.infoID = info_id;
@@ -86,7 +86,7 @@ public class UserInfoInterface extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public void setListener(UserInfoListener l) {
+	public void setListener(InfoListener l) {
 		this.listener = l;
 	}
 	

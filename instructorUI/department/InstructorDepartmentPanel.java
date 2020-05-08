@@ -16,14 +16,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import instructorUI.InstructorInterface;
-import instructorUI.teach.TeachCourseTableModel;
+import util.InfoListener;
+import util.SimpleTableModel;
 
 @SuppressWarnings("serial")
-public class InstructorDepartmentPanel extends JPanel implements AddCourseListener {
+public class InstructorDepartmentPanel extends JPanel implements InfoListener {
 	
 	private InstructorInterface frame;
 	private String departmentID, departmentName;
-	private TeachCourseTableModel departmentCourses;
+	private SimpleTableModel departmentCourses;
 	private JTable courseTable;
 	
 	public InstructorDepartmentPanel(InstructorInterface frame) {
@@ -45,7 +46,6 @@ public class InstructorDepartmentPanel extends JPanel implements AddCourseListen
 			messageLabel.setText("You are not the head instructor of any department");
 		} else {
 			messageLabel.setText("You are the head instructor of department " + departmentID + " (" + departmentName + ")");
-			departmentCourses = new TeachCourseTableModel();
 			try {
 				loadTable();
 			} catch (SQLException e) {
@@ -111,7 +111,7 @@ public class InstructorDepartmentPanel extends JPanel implements AddCourseListen
 		departmentID = null;
 		departmentName = null;
 		Statement st = frame.getConnection().createStatement();
-		String sql = String.format("SELECT * FROM College.Department WHERE head_instructor = '%s';", frame.getInstructorID());
+		String sql = String.format("SELECT * FROM College.Department WHERE head_instructor = '%s';", frame.getUserID());
 		ResultSet result = st.executeQuery(sql);
 		if(result.next()) {
 			departmentID = result.getString("department_id");
@@ -120,6 +120,8 @@ public class InstructorDepartmentPanel extends JPanel implements AddCourseListen
 	}
 	
 	public void loadTable() throws SQLException {
+		if(departmentCourses == null)
+			departmentCourses = new SimpleTableModel(new String[] {"Course ID", "Name", "Department", "Instructor"});
 		departmentCourses.clear();
 		Statement st = frame.getConnection().createStatement();
 		String sql = String.format("SELECT * FROM College.Course WHERE department_id = '%s';", departmentID);
@@ -129,12 +131,12 @@ public class InstructorDepartmentPanel extends JPanel implements AddCourseListen
 			String name = result.getString("name");
 			String department = result.getString("department_id");
 			String instructor = result.getString("instructor_id");
-			departmentCourses.addRecord(courseID, name, department, instructor);
+			departmentCourses.addRecord(new String[] {courseID, name, department, instructor});
 		}
 	}
 
 	@Override
-	public void courseAdded() {
+	public void infoChanged() {
 		frame.reload();
 	}
 

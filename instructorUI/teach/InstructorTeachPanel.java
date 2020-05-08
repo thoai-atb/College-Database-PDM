@@ -15,11 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import instructorUI.InstructorInterface;
+import util.SimpleTableModel;
 
 @SuppressWarnings("serial")
 public class InstructorTeachPanel extends JPanel {
 
-	private TeachCourseTableModel teachCourses;
+	private SimpleTableModel teachCourses;
 	private JTable teachCoursesTable;
 	private InstructorInterface frame;
 	
@@ -65,11 +66,11 @@ public class InstructorTeachPanel extends JPanel {
 	
 	public void loadTable() throws SQLException {
 		Statement st = frame.getConnection().createStatement();
-		String sql = String.format("SELECT * FROM College.Course WHERE instructor_id = '%s';", frame.getInstructorID());
+		String sql = String.format("SELECT * FROM College.Course WHERE instructor_id = '%s';", frame.getUserID());
 		ResultSet result = st.executeQuery(sql);
 		
 		if(teachCourses == null) {
-			teachCourses = new TeachCourseTableModel();
+			teachCourses = new SimpleTableModel(new String[] {"Course ID", "Name", "Department", "Instructor"});
 		} else
 			teachCourses.clear();
 		
@@ -78,7 +79,7 @@ public class InstructorTeachPanel extends JPanel {
 			String name = result.getString("name");
 			String department = result.getString("department_id");
 			String instructor = result.getString("instructor_id");
-			teachCourses.addRecord(courseID, name, department, instructor);
+			teachCourses.addRecord(new String[] {courseID, name, department, instructor});
 		}
 	}
 

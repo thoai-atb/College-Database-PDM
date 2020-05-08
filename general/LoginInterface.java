@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import instructorUI.InstructorInterface;
+import staffUI.StaffInterface;
 import studentUI.StudentInterface;
 
 @SuppressWarnings("serial")
@@ -159,7 +160,7 @@ public class LoginInterface extends JFrame {
 		ResultSet result = st.executeQuery(sql);
 		while(result.next()) {
 			if(pass.equals(result.getString("login_pass"))) {
-				new StudentInterface(connection, id);
+				new StaffInterface(connection, id);
 				st.close();
 				dispose();
 				return;

@@ -16,13 +16,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import util.InfoListener;
+
 @SuppressWarnings("serial")
 public class AddCourseInterface extends JFrame {
 	
 	private Connection connection;
 	private String departmentID;
 	private JTextField idField, nameField, insField, depField;
-	private AddCourseListener listener;
+	private InfoListener listener;
 	
 	public AddCourseInterface(Connection connection, String departmentID) {
 		super("Add Course");
@@ -112,12 +114,12 @@ public class AddCourseInterface extends JFrame {
 			nameField.setText("");
 			insField.setText("");
 			JOptionPane.showMessageDialog(null, "Course created successfully!");
-			listener.courseAdded();
+			listener.infoChanged();
 			this.dispose();
 		}
 	}
 	
-	public void setListener(AddCourseListener listener) {
+	public void setListener(InfoListener listener) {
 		this.listener = listener;
 	}
 }
