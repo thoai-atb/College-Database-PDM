@@ -60,6 +60,17 @@ public class UserInfoInterface extends JFrame {
 		c.gridy = 1;
 		this.add(emailField, c);
 		
+		JButton changePassB = new JButton("Change Password");
+		changePassB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changePass();
+			}
+		});
+		c.gridx = 3;
+		c.gridy = 1;
+		this.add(changePassB, c);
+		
 		JButton saveB = new JButton("Save");
 		saveB.addActionListener(new ActionListener() {
 			@Override
@@ -71,7 +82,7 @@ public class UserInfoInterface extends JFrame {
 				}
 			}
 		});
-		c.gridx = 3;
+		c.gridx = 2;
 		c.gridy = 1;
 		this.add(saveB, c);
 		
@@ -98,6 +109,10 @@ public class UserInfoInterface extends JFrame {
 		nameField.setText(result.getString("name"));
 		phoneField.setText(result.getString("phone_number"));
 		emailField.setText(result.getString("email"));
+	}
+	
+	private void changePass() {
+		new ChangePassInterface(connection, infoID);
 	}
 	
 	private void save() throws SQLException {

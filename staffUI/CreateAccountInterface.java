@@ -18,16 +18,20 @@ import javax.swing.JTextField;
 import util.InfoListener;
 
 @SuppressWarnings("serial")
-public class CreateStudentInterface extends JFrame {
+public class CreateAccountInterface extends JFrame {
 	
 	JTextField idField, nameField, depField;
 	Connection connection;
 	InfoListener listener;
+	String userTableName, userIDLabel, entityName;
 	
-	public CreateStudentInterface(Connection connection, InfoListener listener) {
-		super("Create New Student");
+	public CreateAccountInterface(Connection connection, InfoListener listener, String userTableName, String userIDLabel, String entityName) {
+		super("Create New " + entityName);
 		this.connection = connection;
 		this.listener = listener;
+		this.userTableName = userTableName;
+		this.userIDLabel = userIDLabel;
+		this.entityName = entityName;
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -98,13 +102,13 @@ public class CreateStudentInterface extends JFrame {
 		rs.next();
 		String infoID = rs.getString(1);
 
-		// Step 3: Add the new student record
+		// Step 3: Add the new user record
 		String id = idField.getText();
 		String dep = depField.getText();
-		sql = String.format("INSERT INTO Person.Student (info_id, student_id, department_id) VALUES ('%s', '%s', '%s');", infoID, id, dep);
+		sql = String.format("INSERT INTO %s (info_id, %s, department_id) VALUES ('%s', '%s', '%s');", userTableName, userIDLabel, infoID, id, dep);
 		st.executeUpdate(sql);
 		
-		JOptionPane.showMessageDialog(null, "The new student account was created successfully!");
+		JOptionPane.showMessageDialog(null, entityName + " created successfully!");
 		listener.infoChanged();
 	}
 }
